@@ -1,0 +1,21 @@
+package config
+
+type ConfigList struct {
+	Port   string
+	Static string
+}
+
+var Config ConfigList
+
+func LoadConfig() {
+
+	cfg, err := ini.load("config.ini")
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	Config = ConfigList{
+		Port:   cfg.Section("web").Key("port").MustString("8080"),
+		Static: cfg.Section("web").Key("static").String(),
+	}
+}
